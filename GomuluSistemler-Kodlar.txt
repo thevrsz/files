@@ -1,0 +1,399 @@
+from machine import Pin
+from time import sleep
+
+led = Pin(9,Pin.OUT)
+'''
+while True:
+  led.value(1)
+  print("Led yandi")
+  sleep(1)
+  led.value(0)
+  print("led söndü")
+  sleep(1)
+'''
+''' 
+while True:
+  value = int(input("bir sayi giriniz :"))
+  if value == 1:
+    led.value(1)
+    print("Led Yandi")
+    sleep(1)
+    led.value(0)
+  else:
+    print("dogru sayi basilmadi")  
+'''
+led_kirmizi = Pin(0,Pin.OUT)
+led_yesil =Pin(1,Pin.OUT)
+led_mavi = Pin(8,Pin.OUT)
+'''
+led_kirmizi.value(1)
+print("led yandi")
+sleep(1)
+led_kirmizi.value(0)
+print("led sondu")
+sleep(1)
+
+led_yesil.value(1)
+print("led yandi")
+sleep(1)
+led_yesil.value(0)
+print("led sondu")
+sleep(1)
+
+
+led_mavi.value(1)
+print("led yandi")
+sleep(1)
+led_mavi.value(0)
+print("led sondu")
+sleep(1)
+'''
+#ikinci ders kısmı 
+k=0
+y=0
+m=0
+while True:
+    if k==1 and y==1 and m==1:
+        print("bütün ledler yandi...")
+        break
+    value = input("klavyeden bir harf giriniz:")
+    if value == "k":
+        led_kirmizi.value(1)
+        print("Led yandi")
+        sleep(1)
+        led_kirmizi.value(0)
+        print("Led sondu")
+        sleep(1)
+        k=1
+
+    elif value == "y":
+        led_yesil.value(1)
+        print("Led yandi")
+        sleep(1)
+        led_yesil.value(0)
+        print("Led sondu")
+        sleep(1)
+        y=1
+
+    elif value == "m":
+        led_mavi.value(1)
+        print("Led yandi")
+        sleep(1)
+        led_mavi.value(0)
+        print("led sondu")
+        sleep(1)
+        m=1
+        
+    else:
+        print("k,m,y harflerinden herhangi birine basmadınız.")
+        led_kirmizi.value(0)
+        led_yesil.value(0)
+        led_mavi.value(0)   
+     
+
+
+-----------------------------------------------------------------
+
+
+from machine import Pin
+from time import sleep
+'''
+led_sari = Pin(3,Pin.OUT)
+led_mavi = Pin(2,Pin.OUT)
+led_kirmizi = Pin(5,Pin.OUT)
+led_yesil = Pin(1,Pin.OUT)
+#up yapınca kırmızı ,down yazınca yeşil yanar
+#button=Pin(14,Pin.IN,Pin.PULL_UP)
+
+while True:
+    print("button_durumu =", button.value())
+    if button.value() == 1:
+       led_kirmizi.value(1)
+       led_yesil.value(0)
+       sleep(0.1)
+    else:
+        led_kirmizi.value(0)
+        led_yesil.value(1)
+        sleep(0.1)   
+   ''' 
+#ödev: 0 dan 15 e kadar sayı giriniz 15 olması için 1111 olması lazım binary karşılıklarını led ile yaz eğer 0 ile 15 araası değilse hata mesajı verir
+from machine import Pin
+
+# Renkli LED'lerin tanımlanması
+led_sari = Pin(3, Pin.OUT)    # MSB
+led_mavi = Pin(2, Pin.OUT)
+led_kirmizi = Pin(5, Pin.OUT)
+led_yesil = Pin(1, Pin.OUT)   # LSB
+
+# LED'leri sırayla bir listeye ekliyoruz (MSB → LSB)
+ledler = [led_sari, led_mavi, led_kirmizi, led_yesil]
+
+def sayiyi_binarye_cevir(sayi):
+    binary = bin(sayi)[2:]
+    while len(binary) < 4:
+        binary = '0' + binary
+    return binary
+
+def led_durumunu_yazdir(binary):
+    print("LED Durumları (MSB → LSB):")
+    for i in range(4):
+        durum = 1 if binary[i] == '1' else 0
+        ledler[i].value(durum)
+        renk = ["SARI", "MAVİ", "KIRMIZI", "YEŞİL"][i]
+        print("LED {}: {}".format(renk, "ON" if durum else "OFF"))
+
+def main():
+    try:
+        sayi = int(input("0 ile 15 arasında bir sayı giriniz: "))
+        if 0 <= sayi <= 15:
+            binary = sayiyi_binarye_cevir(sayi)
+            print("Binary karşılığı:", binary)
+            led_durumunu_yazdir(binary)
+        else:
+            print("Hata: Lütfen 0 ile 15 arasında bir sayı giriniz.")
+    except:
+        print("Hata: Lütfen geçerli bir tam sayı giriniz.")
+
+main()
+
+
+
+
+---------------------------------------------------------------------------
+
+
+#ödev: 0 dan 15 e kadar sayı giriniz 15 olması için 1111 olması lazım 
+#binary karşılıklarını led ile yaz eğer 0 ile 15 araası değilse hata mesajı verir
+from machine import Pin
+import time
+
+led_kirmizi = Pin(0, Pin.OUT)
+led_yesil = Pin(1, Pin.OUT)
+led_mavi = Pin(2, Pin.OUT)
+led_sari = Pin(3, Pin.OUT)
+
+ledler = [led_sari, led_mavi, led_kirmizi, led_yesil]
+
+def sayiyi_binarye_cevir(sayi):
+    binary = bin(sayi)[2:]
+    while len(binary) < 4:
+        binary = '0' + binary
+    return binary
+
+def led_durumunu_yazdir(binary):
+    print("LED Durumları (MSB → LSB):")
+    for i in range(4):
+        durum = 1 if binary[i] == '1' else 0
+        ledler[i].value(durum)
+        renk = ["SARI", "MAVİ", "KIRMIZI", "YEŞİL"][i]
+        print("LED {}: {}".format(renk, "ON" if durum else "OFF"))
+
+def main():
+    while True:
+        try:
+            sayi = int(input("0 ile 15 arasında bir sayı giriniz (çıkmak için -1): "))
+            if sayi == -1:
+                print("Program sonlandırılıyor...")
+                # LED'leri kapat
+                for led in ledler:
+                    led.value(0)
+                break
+            elif 0 <= sayi <= 15:
+                binary = sayiyi_binarye_cevir(sayi)
+                print("Binary karşılığı:", binary)
+                led_durumunu_yazdir(binary)
+            else:
+                print("Hata: Lütfen 0 ile 15 arasında bir sayı giriniz.")
+        except:
+            print("Hata: Lütfen geçerli bir tam sayı giriniz.")
+        print()  # satır boşluğu
+        time.sleep(1)  # çok hızlı tekrarlamasın
+
+main()
+
+
+------------------------------------------------------------------------------------------
+
+
+#rgb ledi önce yak ,sonra klavyeden renk gir istediğin renkte yansın. 
+from machine import Pin
+import time
+'''
+# RGB LED pinlerini dijital çıkış olarak tanımlama
+red_pin = Pin(0, Pin.OUT)    
+green_pin = Pin(1, Pin.OUT)  
+blue_pin = Pin(2, Pin.OUT)   
+
+# LED'leri açma/kapama fonksiyonları
+def red_on():
+    red_pin.value(1)
+    green_pin.value(0)
+    blue_pin.value(0)
+
+def green_on():
+    red_pin.value(0)
+    green_pin.value(1)
+    blue_pin.value(0)
+
+def blue_on():
+    red_pin.value(0)
+    green_pin.value(1)
+    blue_pin.value(1)
+
+def all_off():
+    red_pin.value(0)
+    green_pin.value(0)
+    blue_pin.value(0)
+
+# Ana program
+while True:
+    try:
+        print("Kırmızı")
+        red_on()
+        time.sleep(1)
+        
+        print("Yeşil")
+        green_on()
+        time.sleep(1)
+        
+        print("Mavi")
+        blue_on()
+        time.sleep(1)
+        
+        print("Kapalı")
+        all_off()
+        time.sleep(1)
+    except KeyboardInterrupt:
+        all_off()
+        break
+'''
+from machine import Pin
+import time
+
+# RGB LED pin bağlantıları
+RED_PIN = 0
+GREEN_PIN = 1
+BLUE_PIN = 2
+
+# RGB LED pinlerini çıkış olarak ayarlama
+red = Pin(RED_PIN, Pin.OUT)
+green = Pin(GREEN_PIN, Pin.OUT)
+blue = Pin(BLUE_PIN, Pin.OUT)
+
+# Kullanıcıdan 0-255 arasında üç değer al
+def get_color_input():
+    try:
+        # RGB bileşenlerinin değerlerini kullanıcıdan al
+        r = int(input("Kırmızı için 0-255 arasında bir değer girin: "))
+        g = int(input("Yeşil için 0-255 arasında bir değer girin: "))
+        b = int(input("Mavi için 0-255 arasında bir değer girin: "))
+
+        # Değerlerin geçerli olup olmadığını kontrol et
+        if not (0 <= r <= 255) or not (0 <= g <= 255) or not (0 <= b <= 255):
+            print("Lütfen 0 ile 255 arasında geçerli bir değer girin!")
+            return get_color_input()  # Yanlış değer girildiyse yeniden dene
+
+        return r, g, b  # Renk bileşenlerini döndür
+
+    except ValueError:
+        print("Lütfen geçerli bir sayı girin!")
+        return get_color_input()  # Yanlış giriş yapıldığında tekrar sor
+
+# RGB LED'i yak
+def set_led_color(r, g, b):
+    # PWM ile RGB LED'in parlaklık seviyelerini ayarlama
+    red.value(1 if r > 0 else 0)   # 0'dan büyükse kırmızı yanacak
+    green.value(1 if g > 0 else 0)  # 0'dan büyükse yeşil yanacak
+    blue.value(1 if b > 0 else 0)   # 0'dan büyükse mavi yanacak
+
+# Ana program fonksiyonu
+def main():
+    while True:
+        # Kullanıcıdan renk bileşenlerini al
+        r, g, b = get_color_input()
+        set_led_color(r, g, b)
+        time.sleep(1)  # 1 saniye bekle
+
+if __name__ == "__main__":
+    main()
+
+
+
+    
+   
+
+----------------------------------------------------------------------------------
+
+
+
+from machine import Pin
+from utime import sleep
+from utime import ticks_diff
+from utime import ticks_ms
+
+pins = [
+    Pin(0,Pin.OUT), #A
+    Pin(1,Pin.OUT), #B
+    Pin(2,Pin.OUT), #C
+    Pin(3,Pin.OUT), #D
+    Pin(4,Pin.OUT), #E
+    Pin(5,Pin.OUT), #F
+    Pin(6,Pin.OUT), #G
+    Pin(0,Pin.OUT), #DP (not connected)
+    ]
+
+digits = [
+    [0,0,0,0,0,0,1,1], #0
+    [1,0,0,1,1,1,1,1], #1
+    [0,0,1,0,0,1,0,1], #2
+    [0,0,0,0,1,1,0,1], #3
+    [1,0,0,1,1,0,0,1], #4
+    [0,1,0,0,1,0,0,1], #5
+    [0,1,0,0,0,0,0,1], #6
+    [0,0,0,1,1,1,1,1], #7
+    [0,0,0,0,0,0,0,1], #8
+    [0,0,0,1,1,0,0,1]  #9
+ 
+]    
+
+i=int(input("Bir sayı giriniz:"))
+for j in range(len(pins)-1):
+    pins[j].value(digits[i][j])
+    sleep(0.5)
+
+#burada bir sayı daha girip + ya basınca toplayıp bordda onu yakan kodu yaz 
+#haftayaki dersde herkes adını ledde yazdıracak led dot matrix kullanılacak
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
+#chatgpt kodu 
+def display_digit(n):
+    if 0 <= n <= 9:
+        for i in range(7):
+            pins[i].value(digits[n][i])
+    else:
+        print("geçersiz sayı girimi! 0 ile 9 arasında bir rakam giriniz!")
+
+while True:
+    try:
+        num = int(input("Bir sayı girin: "))
+        display_digit(num)
+    except:
+        print("Geçersiz giriş!")
+'''
+
+
+----------------------------------------------------------------------------------------
